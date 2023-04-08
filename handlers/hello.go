@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 )
@@ -11,18 +11,18 @@ type Hello struct {
 	l *log.Logger
 }
 
-func newHello(l *log.Logger) *Hello {
+func NewHello(l *log.Logger) *Hello {
 	return &Hello{l}
 }
 
 func (h *Hello) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	h.l.Println("Hello world")
+	h.l.Println("It is working")
 
-	d, err := ioutil.ReadAll(r.Body)
+	d, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(rw, "Oops", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Fprintf(rw, "Hello, %s\n", d)
+	fmt.Fprintf(rw, "Hi, %s\n", d)
 }
